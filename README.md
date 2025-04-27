@@ -1,6 +1,6 @@
-# Spring Security 없이 OAuth2 구현
+# Simple blog
 
-카카오, 구글 소셜 로그인을 API 통신으로만 구현합니다.
+Jpa, Jdbc를 이용하여 간단한 블로그를 개발합니다.
 
 ## Feature
 
@@ -8,7 +8,8 @@
 - KAKAO API, GOOGLE API
 - User data는 memory H2 기반으로 저장됩니다.
 - 시스템의 인증은 쿠키와 세션 기반으로 인증됩니다.
-- ❌ 로그인한 회원 정보 기능은 구현하지 않았습니다.
+- 로그인한 회원 정보 조회
+- 게시글 생성 수정 삭제 조회 (❌ 별도의 페이징은 구현하지 않았습니다)
 
 ## Required
 
@@ -57,7 +58,7 @@ chmod +x run.sh
 
 ### Model
 
-![img.png](img.png)
+![img_1.png](img_1.png)
 
 ### Project Layer
 
@@ -104,7 +105,7 @@ sequenceDiagram
     ClientImpl -->> Controller: OauthResponse(email, providerId, provider)
     Controller ->> AuthService: oauth2Login(email, providerId, provider)
     AuthService ->> OauthRepo: findByProviderIdAndProvider()
-    
+
     alt Oauth 매핑 존재
         OauthRepo -->> AuthService: Oauth → User
         AuthService -->> Controller: User
