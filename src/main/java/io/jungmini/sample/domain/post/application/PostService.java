@@ -48,7 +48,7 @@ public class PostService {
 
 		post.update(title, content);
 
-		return post;
+		return postRepository.save(post);
 	}
 
 	@Transactional
