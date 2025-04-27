@@ -56,6 +56,8 @@ chmod +x run.sh
 
 4. 구글 소셜 로그인 엔드포인트 http://localhost:8080/api/auth/google/login
 
+5. Swagger 엔드 포인트 http://localhost:8080/swagger-ui/index.html
+
 ### Model
 
 ![img_1.png](img_1.png)
