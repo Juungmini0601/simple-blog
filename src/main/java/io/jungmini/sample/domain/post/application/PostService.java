@@ -33,7 +33,7 @@ public class PostService {
 		Post post = Post.builder()
 			.title(title)
 			.content(content)
-			.user(user)
+			.userId(user.getId())
 			.build();
 
 		return postRepository.save(post);
@@ -42,7 +42,7 @@ public class PostService {
 	@Transactional
 	public Post update(Long id, String title, String content, User user) {
 		Post post = postRepository.findByIdOrElseThrow(id);
-		if (!post.isOwner(user)) {
+		if (!post.isOwner(user.getId())) {
 			throw new MyBlogException(ErrorType.AUTHORIZATION_ERROR, "게시글의 작성자만 수정/삭제할 수 있습니다.");
 		}
 
@@ -54,7 +54,7 @@ public class PostService {
 	@Transactional
 	public void delete(Long id, User user) {
 		Post post = postRepository.findByIdOrElseThrow(id);
-		if (!post.isOwner(user)) {
+		if (!post.isOwner(user.getId())) {
 			throw new MyBlogException(ErrorType.AUTHORIZATION_ERROR, "게시글의 작성자만 수정/삭제할 수 있습니다.");
 		}
 

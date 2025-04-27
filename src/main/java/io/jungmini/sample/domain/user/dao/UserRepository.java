@@ -2,13 +2,15 @@ package io.jungmini.sample.domain.user.dao;
 
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import io.jungmini.sample.domain.user.model.entity.User;
 import io.jungmini.sample.global.error.ErrorType;
 import io.jungmini.sample.global.error.MyBlogException;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository {
+	Optional<User> findById(Long id);
+
+	User save(User user);
+
 	boolean existsByEmail(String email);
 
 	Optional<User> findByEmail(String email);

@@ -50,24 +50,23 @@ public class AuthService {
 	public User oauth2Login(String email, String providerId, OAuthProvider oAuthProvider) {
 		// 소셜 로그인 정보가 있을 경우 유저 정보를 찾아서 반환
 		return oauthRepository.findByProviderIdAndProvider(providerId, oAuthProvider)
-			.map(Oauth::getUser)
 			.orElseGet(() -> {
 				// 소셜 로그인 정보가 없을 경우 일반 회원 유저인지 확인
 				User user = userRepository.findByEmail(email).orElse(null);
 
 				// 일반 회원이었으면 소셜 연동 정보 추가
 				if (user != null) {
-					Oauth oauth = new Oauth(oAuthProvider, providerId);
-					user.addOauth(oauth);
+					Oauth oauth = new Oauth(oAuthProvider, providerId, user.getId());
 					oauthRepository.save(oauth);
 					return user;
 				}
 
 				// 일반 회원도 아니었으면 회원을 생성
 				User newUser = new User(email, null);
-				Oauth oauth = new Oauth(oAuthProvider, providerId);
-				newUser.addOauth(oauth);
-				userRepository.save(newUser);
+				User savedUser = userRepository.save(newUser);
+
+				Oauth oauth = new Oauth(oAuthProvider, providerId, savedUser.getId());
+				oauthRepository.save(oauth);
 
 				return newUser;
 			});

@@ -1,19 +1,21 @@
 package io.jungmini.sample.domain.post.dao;
 
 import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
 import io.jungmini.sample.domain.post.model.entity.Post;
-import io.jungmini.sample.domain.user.model.entity.User;
 import io.jungmini.sample.global.error.ErrorType;
 import io.jungmini.sample.global.error.MyBlogException;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository {
+
+	void deleteById(Long id);
+
+	Post save(Post post);
+
+	Optional<Post> findById(Long id);
 
 	List<Post> findAllByOrderByCreatedAtDesc();
-
-	List<Post> findByUserOrderByCreatedAtDesc(User user);
 
 	default Post findByIdOrElseThrow(Long id) {
 		return findById(id)
